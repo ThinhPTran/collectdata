@@ -7,4 +7,6 @@
                  [org.clojure/java.jdbc "0.7.10"]
                  [org.xerial/sqlite-jdbc "3.8.11.2"]
                  [clj-time "0.12.0"]
-                 [org.clojure/data.csv "0.1.4"]])
+                 [org.clojure/data.csv "0.1.4"]
+                 [com.hypirion/clj-xchart "0.2.0"]
+                 [com.github.sebhoss/math-clj "[1.0.0,2.0.0)"]])
