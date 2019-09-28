@@ -20,7 +20,7 @@
              :range  [50 590]
              :pos    550})
    :y-axis (viz/linear-axis
-            {:domain      [0.1 100]
+            {:domain      [0.1 100]u
              :range       [550 20]
              :major       10
              :minor       5
@@ -39,3 +39,12 @@
              :layout  viz/svg-scatter-plot}]})
 
 (export-viz spec "resources/scatter-linear.svg")
+
+(-> spec
+    (assoc :y-axis (viz/log-axis
+                    {:domain      [0.1 101]
+                     :range       [550 20]
+                     :pos         50
+                     :label-dist  15
+                     :label-style {:text-anchor "end"}}))
+    (export-viz "resources/scatter-log.svg"))
