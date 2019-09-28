@@ -150,6 +150,12 @@
 
 (map #(get_cpi_by_year %) (get_years_list))
 
+(defn get_cpi_vs_year
+  [years]
+  (map #(get_cpi_by_year %) years))
+
+(get_cpi_vs_year (get_years_list))
+
 
 
 
