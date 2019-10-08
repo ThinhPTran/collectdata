@@ -20,7 +20,7 @@
              :range  [50 590]
              :pos    550})
    :y-axis (viz/linear-axis
-            {:domain      [0.1 100]u
+            {:domain      [0.1 100]
              :range       [550 20]
              :major       10
              :minor       5

@@ -10,4 +10,5 @@
                  [org.clojure/data.csv "0.1.4"]
                  [com.hypirion/clj-xchart "0.2.0"]
                  [com.github.sebhoss/math-clj "[1.0.0,2.0.0)"]
-                 [thi.ng/geom "1.0.0-RC3"]])
+                 [thi.ng/geom "1.0.0-RC3"]]
+  :main collectdata.core)

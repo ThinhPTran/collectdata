@@ -5,6 +5,7 @@
             [com.github.sebhoss.math :refer :all]
             [clojure.string :as str]))
 
+
 ;; Read cpi data start
 ;; Create DB
 (def db-conf {:classname "org.sqlite.JDBC"
@@ -158,11 +159,19 @@
 
 
 
-
-
 ;; Read Cpi data end
 
 ;; Read
+
+
+
+
+
+
+
+
+
+
 
 
 
