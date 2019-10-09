@@ -78,19 +78,19 @@
 
 ;;(insert-data (data_2_records (read_cpi_through_month "resources/CPI_through_month.csv")) :eco_cpi_month)
 
-(def get_all_eco_cpi_month
+(def get_all_eco_cpi_month_query
   "select *
   from eco_cpi_month where 1 = 1")
 
-(def get_eco_cpi_month_on_year
+(def get_eco_cpi_month_on_year_query
   "select *
   from eco_cpi_month where year = ?")
 
-(def get_years
+(def get_years_query
   "select distinct year
   from eco_cpi_month where 1 = 1")
 
-(jdbc/query db-conf [get_all_eco_cpi_month])
+(jdbc/query db-conf [get_all_eco_cpi_month_query])
 
 
 
@@ -114,9 +114,9 @@
 ; log a = log x1 + log x2 + ....
 ; a = e^(log x1 + log x2 + ...)
 
-(map #(:cpi %) (jdbc/query db-conf [get_eco_cpi_month_on_year 2008]))
+(map #(:cpi %) (jdbc/query db-conf [get_eco_cpi_month_on_year_query 2008]))
 
-(->> (jdbc/query db-conf [get_eco_cpi_month_on_year 2006])
+(->> (jdbc/query db-conf [get_eco_cpi_month_on_year_query 2006])
      (map #(:cpi %))
      (map #(/ % 100))
      (map #(ln %))
@@ -127,11 +127,11 @@
      (-))
 
 
-(jdbc/query db-conf [get_years])
+(jdbc/query db-conf [get_years_query])
 
 (defn get_years_list
   []
-  (->> (jdbc/query db-conf [get_years])
+  (->> (jdbc/query db-conf [get_years_query])
        (map #(:year %))
        (sort)))
 
@@ -139,7 +139,7 @@
 
 (defn get_cpi_by_year
   [year]
-  (->> (jdbc/query db-conf [get_eco_cpi_month_on_year year])
+  (->> (jdbc/query db-conf [get_eco_cpi_month_on_year_query year])
        (map #(:cpi %))
        (map #(/ % 100))
        (map #(ln %))
@@ -161,7 +161,68 @@
 
 ;; Read Cpi data end
 
-;; Read
+;; Read Cpi from press start
+
+(def cpi_years_press (range 1996 2019))
+(def cpi_press '(4.5 3.6 9.2 0.1 -0.6 0.8 4.04 3.01 9.67 8.71 7.5 8.3 22.97 6.88 9.19 18.58 9.21 6.6 4.09 0.63 4.74 3.53 3.54))
+
+(defn create-table
+  "create db and table"
+  [table_name table_scheme]
+  (try (jdbc/db-do-commands db-conf
+            (jdbc/create-table-ddl table_name table_scheme))
+       (catch Exception e
+         (println (.getMessage e)))))
+
+(defn drop-table
+  [table_name]
+  (try (jdbc/db-do-commands db-conf
+            (jdbc/drop-table-ddl table_name))
+       (catch Exception e
+         (println (.getMessage e)))))
+
+;; Create table
+;; (create-table :eco_cpi_press [[:year :int] [:cpi :real]])
+
+;(insert-data (map (fn [year cpi] {:year year :cpi cpi})  cpi_years_press cpi_press ) :eco_cpi_press)
+
+(def get_cpi_from_press_query
+  "select *
+  from eco_cpi_press where 1 = 1")
+
+(def get_year_list_from_press_query
+  "select distinct year
+  from eco_cpi_press where 1 = 1 order by year asc")
+
+(def get_cpi_from_press_by_year_query
+  "select cpi
+  from eco_cpi_press where year = ?")
+
+
+(jdbc/query db-conf [get_cpi_from_press_query])
+
+(jdbc/query db-conf [get_year_list_from_press_query])
+
+(defn get_year_list_from_press
+  []
+  (->> (jdbc/query db-conf get_year_list_from_press_query)
+       (map #(:year %))))
+
+(get_year_list_from_press)
+
+(defn get_cpi_list_from_press_by_years
+  [year_list]
+  (->> (map #(jdbc/query db-conf [get_cpi_from_press_by_year_query %]) year_list)
+       (map #(first %))
+       (map #(:cpi %))))
+
+(get_cpi_list_from_press_by_years (get_year_list_from_press))
+
+;;(map #(jdbc/query db-conf [get_cpi_from_press_by_year_query %]) (get_year_list_from_press))
+
+;; Read cpi from press end
+
+
 
 
 
