@@ -69,7 +69,7 @@
                      :cpi (get-in data [imonth iyear])}))
     (persistent! result)))
 
-;;(data_2_records (read_cpi_through_month "resources/CPI_through_month.csv"))
+(data_2_records (read_cpi_through_month "resources/CPI_through_month.csv"))
 
 (defn insert-data
   [data table]
@@ -220,8 +220,104 @@
 
 ;;(map #(jdbc/query db-conf [get_cpi_from_press_by_year_query %]) (get_year_list_from_press))
 
+
+
 ;; Read cpi from press end
 
+;; Read gdp start
+
+;;(create-table :eco_gdp_year [[:year :int]
+;;                             [:total :real]
+;;                             [:kt_nha_nuoc :real]
+;;                             [:kt_ngoai_nha_nuoc :real]
+;;                             [:kt_tap_the :real]
+;;                             [:kt_tu_nhan :real]
+;;                             [:kt_ca_the :real]
+;;                             [:kt_co_von_nn :real]
+;;                             [:nong_lam_thuy :real]
+;;                             [:khai_khoang :real]
+;;                             [:cn_che_bien :real]
+;;                             [:sx_pp_dien_khi_nuoc :real]
+;;                             [:cc_nuoc_xl_rac_nuoc :real]
+;;                             [:xay_dung :real]
+;;                             [:bb_xe_dong_co :real]
+;;                             [:van_tai :real]
+;;                             [:dv_luu_tru :real]
+;;                             [:truyen_thong :real]
+;;                             [:tai_chinh_nh_bh :real]
+;;                             [:bds :real]
+;;                             [:khoa_hoc_cn :real]
+;;                             [:hc_dv_ho_tro :real]
+;;                             [:dcs :real]
+;;                             [:giao_duc :real]
+;;                             [:yte_xh :real]
+;;                             [:nt_vchoi_gtri :real]
+;;                             [:dv_khac :real]
+;;                             [:lthue_cv_gd :real])
+
+(def eco_gdp_year_key_vec [:year
+                           :total
+                           :kt_nha_nuoc
+                           :kt_ngoai_nha_nuoc
+                           :kt_tap_the
+                           :kt_tu_nhan
+                           :kt_ca_the
+                           :kt_co_von_nn
+                           :nong_lam_thuy
+                           :khai_khoang
+                           :cn_che_bien
+                           :sx_pp_dien_khi_nuoc
+                           :cc_nuoc_xl_rac_nuoc
+                           :xay_dung
+                           :bb_xe_dong_co
+                           :van_tai
+                           :dv_luu_tru
+                           :truyen_thong
+                           :tai_chinh_nh_bh
+                           :bds
+                           :khoa_hoc_cn
+                           :hc_dv_ho_tro
+                           :dcs
+                           :giao_duc
+                           :yte_xh
+                           :nt_vchoi_gtri
+                           :dv_khac
+                           :lthue_cv_gd])
+
+(count eco_gdp_year_key_vec)
+
+(defn read_gdp_from_file
+  [filename]
+  (let [reader (io/reader filename)
+        rawdata (->> (csv/read-csv reader)
+                     (map #(drop-last %))
+                     (apply map list)
+                     (map drop-last)
+                     (map drop-last)
+                     (map drop-last)
+                     (map drop-last)
+                     (map #(zipmap eco_gdp_year_key_vec (vec %))))]
+    rawdata))
+
+(read_gdp_from_file "resources/GDP_2005_2018.csv")
+
+;;(insert-data (read_gdp_from_file "resources/GDP_2005_2018.csv") :eco_gdp_year)
+
+
+(def get_gdp_through_years_query
+  "select year, total from eco_gdp_year where 1 = 1 order by year asc")
+
+(jdbc/query db-conf [get_gdp_through_years_query])
+
+(defn get_gdp_through_years
+  []
+  (jdbc/query db-conf [get_gdp_through_years_query]))
+
+
+(get_gdp_through_years)
+
+
+;; Read gdp end
 
 
 

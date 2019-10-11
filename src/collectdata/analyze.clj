@@ -8,6 +8,7 @@
 (db/get_year_list_from_press)
 (db/get_cpi_list_from_press_by_years (db/get_year_list_from_press))
 
+(db/get_gdp_through_years)
 
 ;;(range 2002 2016)
 
