@@ -2,7 +2,6 @@
   (:require [collectdata.db :as db]
             [com.hypirion.clj-xchart :as c]))
 
-
 (db/get_years_list)
 (db/get_cpi_vs_year (db/get_years_list))
 (db/get_year_list_from_press)
