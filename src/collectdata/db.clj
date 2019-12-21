@@ -62,7 +62,7 @@
 (defn data_2_records
   [{:keys [years months data]}]
   (let [result (transient [])]
-    (doseq [iyear (range 24)
+    (doseq [iyear (range 25)
             imonth (range 12)]
       (conj! result {:year (+ 1995 iyear)
                      :month (+ 1 imonth)
@@ -218,7 +218,7 @@
 
 (get_cpi_list_from_press_by_years (get_year_list_from_press))
 
-;;(map #(jdbc/query db-conf [get_cpi_from_press_by_year_query %]) (get_year_list_from_press))
+(map #(jdbc/query db-conf [get_cpi_from_press_by_year_query %]) (get_year_list_from_press))
 
 
 
