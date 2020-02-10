@@ -1,5 +1,6 @@
 (ns collectdata.analyze
   (:require [collectdata.db :as db]
+            [com.github.sebhoss.math :refer :all]
             [com.hypirion.clj-xchart :as c]))
 
 (db/get_years_list)
@@ -27,3 +28,14 @@
   {:title "CPI vs. Years"}))
 
 
+;; Estimate gold price based on CPI
+
+(->> (db/get_years_list)
+     (filter #(>= % 2000))
+     (db/get_cpi_vs_year)
+     (map #(/ % 100))
+     (map #(+ % 1))
+     (map #(ln %))
+     (reduce +)
+     (exp)
+     (* 300))
