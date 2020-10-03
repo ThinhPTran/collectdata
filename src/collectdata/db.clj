@@ -69,6 +69,8 @@
                      :cpi (get-in data [imonth iyear])}))
     (persistent! result)))
 
+
+;; Transfer data from file resources/CPI_through_month.csv to records to insert to table
 (data_2_records (read_cpi_through_month "resources/CPI_through_month.csv"))
 
 (defn insert-data
@@ -76,8 +78,11 @@
   (jdbc/insert-multi! db-conf table data))
 
 
+;; Function to insert CPI data to db
 ;;(insert-data (data_2_records (read_cpi_through_month "resources/CPI_through_month.csv")) :eco_cpi_month)
 
+
+;; Some queries to check data
 (def get_all_eco_cpi_month_query
   "select *
   from eco_cpi_month where 1 = 1")
@@ -157,9 +162,9 @@
 
 (get_cpi_vs_year (get_years_list))
 
-
-
 ;; Read Cpi data end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Read Cpi from press start
 
@@ -223,6 +228,8 @@
 
 
 ;; Read cpi from press end
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Read gdp start
 
